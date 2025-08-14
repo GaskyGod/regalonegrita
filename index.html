@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feliz cumpleaños, Mi Negrita</title>
+  <meta name="description" content="Un detalle hecho con cariño, para ti." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#1d0b2e; /* uva */
+      --bg2:#2e0f42; /* ciruela */
+      --bg3:#4a145b; /* morado */
+      --rose:#ff9bb6;
+      --rose-strong:#ff6f9a;
+      --gold:#ffd166;
+      --soft:#ffe7f1;
+      --ink:#240a1f;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:#fff; font-family:Poppins,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(255,255,255,.06), transparent 60%),
+                  radial-gradient(900px 700px at 80% 30%, rgba(255,255,255,.04), transparent 60%),
+                  linear-gradient(135deg,var(--bg1),var(--bg2) 50%,var(--bg3));
+      overflow-x:hidden;
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+
+    /* HERO */
+    header.hero{position:relative;min-height:90vh;display:grid;place-items:center;text-align:center}
+    .title{
+      font-family:'Playfair Display',serif; font-weight:700; line-height:1.05;
+      font-size:clamp(36px,6vw,72px); margin:0; letter-spacing:.5px;
+    }
+    .subtitle{margin:.6rem 0 1.2rem; font-weight:300; font-size:clamp(14px,2.6vw,18px); opacity:.9}
+    .cta{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+    .btn{
+      background:linear-gradient(135deg,var(--rose),var(--rose-strong));
+      color:#1d0b2e; font-weight:600; border:none; padding:12px 18px; border-radius:999px;
+      box-shadow:0 10px 30px rgba(255,111,154,.25); cursor:pointer; transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .btn:hover{transform:translateY(-2px); box-shadow:0 16px 40px rgba(255,111,154,.35)}
+    .btn.alt{background:transparent; border:1.5px solid rgba(255,255,255,.35); color:#fff}
+
+    /* Floating hearts */
+    .hearts{position:absolute; inset:0; pointer-events:none; overflow:hidden}
+    .heart{position:absolute; bottom:-80px; font-size:clamp(18px,2.2vw,28px); opacity:.75; filter:drop-shadow(0 6px 14px rgba(255,105,135,.25));}
+    @keyframes floatUp{from{transform:translateY(0) translateX(0); opacity:.0} to{transform:translateY(-115vh) translateX(var(--dx)); opacity:1}}
+
+    /* Envelope */
+    .envelope-area{display:grid; place-items:center; margin:70px auto;}
+    .envelope{width:min(520px,92vw); height:340px; position:relative; perspective:1200px}
+    .env-body{position:absolute; inset:0; background:linear-gradient(180deg,#faf6fb,#fbe9f3); border-radius:18px; box-shadow:0 20px 60px rgba(0,0,0,.25)}
+    .flap{position:absolute; inset:0; transform-origin:top; background:linear-gradient(180deg,#ffd6e6,#fbc2d5); clip-path:polygon(0 0,100% 0,50% 60%); border-top-left-radius:18px; border-top-right-radius:18px; transition:transform .8s cubic-bezier(.2,.75,.2,1)}
+    .letter{position:absolute; left:24px; right:24px; bottom:20px; height:76%; background:#fff; border-radius:14px; padding:24px 22px; box-shadow:0 8px 30px rgba(0,0,0,.15); transform:translateY(22%); transition:transform .6s ease .25s; overflow:auto}
+    .envelope.open .flap{transform:rotateX(160deg)}
+    .env-body { z-index: 1; }
+.letter   { z-index: 2; }
+.flap     { z-index: 3; } /* la solapa encima de la carta cuando está cerrada */
+    /* Oculta la carta mientras el sobre está cerrado */
+.envelope:not(.open) .letter {
+  opacity: 0;
+  transform: translateY(40%);
+  pointer-events: none;
+}
+
+    .envelope.open .letter {
+  transform: translateY(-2%);
+  opacity: 1;
+  pointer-events: auto;
+}
+    .letter h3{font-family:'Playfair Display',serif;color:var(--ink); margin:0 0 8px; font-size:26px}
+    .letter p{color:#3d2a37; line-height:1.6; margin:.5rem 0}
+    .letter .sig{margin-top:16px; font-weight:600}
+    .letter small{opacity:.8}
+
+    /* Quote band */
+    .quote{margin:80px 0; padding:34px 22px; border:1.5px dashed rgba(255,255,255,.35); border-radius:16px; text-align:center; backdrop-filter:blur(4px); background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));}
+    .quote p{font-family:'Playfair Display',serif; font-size:clamp(18px,3.2vw,28px); margin:0 0 6px}
+    .quote span{display:block; font-size:13px; opacity:.8}
+
+    /* Gallery */
+    .gallery{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin:26px 0 80px}
+    .card{position:relative; overflow:hidden; border-radius:18px; background:#000; aspect-ratio:3/4; box-shadow:0 14px 38px rgba(0,0,0,.3)}
+    .card img{width:100%; height:100%; object-fit:cover; opacity:.88; transition:transform .5s ease, opacity .3s ease}
+    .card:after{content:""; position:absolute; inset:0; background:radial-gradient(60% 40% at 50% 70%, transparent, rgba(0,0,0,.55));}
+    .card:hover img{transform:scale(1.06); opacity:1}
+
+    /* Audio pill */
+    .audio-pill{position:fixed; right:18px; bottom:18px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22); border-radius:999px; display:flex; align-items:center; gap:8px; padding:10px 14px; backdrop-filter:blur(6px); z-index:50}
+    .audio-pill button{all:unset; cursor:pointer; background:linear-gradient(135deg,var(--rose),var(--rose-strong)); color:#1d0b2e; border-radius:999px; font-weight:700; padding:6px 12px}
+    .audio-pill small{opacity:.9}
+
+    /* Footer */
+    footer{opacity:.8; text-align:center; font-size:12px; padding:22px 0 40px}
+
+    /* Typewriter */
+    .type{display:inline-block; border-right:2px solid rgba(255,255,255,.7); padding-right:2px; animation:blink .9s step-end infinite}
+    @keyframes blink{50%{border-color:transparent}}
+
+    /* Confetti canvas */
+    canvas#confetti{position:fixed; inset:0; pointer-events:none; z-index:40}
+
+    /* Utilities */
+    .muted{opacity:.8}
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+  <div class="wrap">
+    <header class="hero">
+      <div>
+        <h1 class="title">Feliz cumpleaños, <span id="herName">Mi Negrita</span> ✨</h1>
+        <p class="subtitle muted"><span id="typewriter"></span></p>
+        <div class="cta">
+          <button class="btn" id="openLetter">Abrir carta</button>
+          <button class="btn alt" id="throwConfetti">Celebrar 🎉</button>
+        </div>
+      </div>
+      <div class="hearts" id="hearts"></div>
+    </header>
+
+    <!-- Envelope / Letter -->
+    <section class="envelope-area" aria-label="Carta">
+      <div class="envelope" id="envelope">
+        <div class="env-body"></div>
+        <div class="flap"></div>
+        <article class="letter" aria-live="polite">
+          <h3>Para: <span id="toName">Mi Negrita</span> 🤍</h3>
+          <p>
+            Contigo, la eternidad sabe a hogar. Quizás suene cursi, pero así me pasa: incluso a la distancia,
+            pensar en ti me calma, me saca una sonrisa y me recuerda lo valientes que fuimos para querernos en serio.
+          </p>
+          <p>
+            Gracias por cada risa, por cada “cosquilleo” y por enseñarme que el amor también se construye paso a paso.
+            No tengo prisa: prefiero cuidar lo que sentimos con paciencia, respeto y verdad.
+          </p>
+          <p>
+            Me emociona la idea de que, cuando pienses en nosotros, te llegue ese recuerdo bonito —
+            el de dos compañeros que podían con todo. A veces la vida se pone difícil (y sí, duele),
+            pero tú siempre fuiste ese lugar seguro al que yo llamé hogar.
+          </p>
+          <p>
+            Hoy celebro tu vida. Que este nuevo año te encuentre sana, cuidada y feliz. Yo, desde aquí, te aplaudo:
+            por tu valentía, por tu ternura, por esa manera única de mirar el mundo. Si alguna vez me necesitas,
+            sabes dónde encontrarme.
+          </p>
+          <p class="sig">Con cariño,<br><span id="fromName">Daniel</span></p>
+          <small class="muted">PD: cuando vuelvas a sonreír sin dolor… mándame foto de tu primer banquete de cumpleaños 😉</small>
+        </article>
+      </div>
+    </section>
+
+    <!-- Quote band -->
+    <section class="quote" aria-label="frase">
+      <p>“Eres el amor de mi eternidad, de mi universo, de mi tiempo y espacio.”</p>
+      <span class="muted">— Un recuerdo bonito para este día</span>
+    </section>
+
+    <!-- Gallery (reemplaza las imágenes) -->
+    <section>
+      <h2 style="font-family:'Playfair Display',serif; font-size:28px; margin:0 0 10px">Nuestros recuerdos</h2>
+      <p class="muted" style="margin:0 0 16px">Para que recuerdes cada pedacito de nosotros <code>con mucho amor</code>🥰</p>
+      <div class="gallery">
+        <figure class="card">
+          <img src="assets/foto1.jpg" alt="Recuerdo 1 (reemplaza la imagen)" />
+        </figure>
+        <figure class="card">
+          <img src="assets/foto2.jpg" alt="Recuerdo 2 (reemplaza la imagen)" />
+        </figure>
+        <figure class="card">
+          <img src="assets/foto3.jpg" alt="Recuerdo 3 (reemplaza la imagen)" />
+        </figure>
+        <figure class="card">
+          <img src="assets/foto4.jpg" alt="Recuerdo 4 (reemplaza la imagen)" />
+        </figure>
+      </div>
+    </section>
+
+    <footer>
+      Hecho con cariño para <span id="herNameFooter">Mi Negrita</span>. <span class="muted">(Cada linea de codigo la hice pensando en los dos 💑).</span>
+    </footer>
+  </div>
+
+  <!-- Música: coloca tu mp3 en assets/cancion.mp3 -->
+  <audio id="bgm" src="assets/cancion.mp3" preload="none" loop></audio>
+  <div class="audio-pill" role="group" aria-label="Controles de música">
+    <small id="songLabel">Dale Play para escuchar😊 <code></code></small>
+    <button id="toggleMusic">▶︎ Play</button>
+  </div>
+
+  <script>
+    /* === Personaliza nombres aquí === */
+    const HER_NAME = "Mi Negrita"; // cámbialo por su nombre si quieres
+    const YOUR_NAME = "Daniel";
+    document.getElementById('herName').textContent = HER_NAME;
+    document.getElementById('toName').textContent = HER_NAME;
+    document.getElementById('fromName').textContent = YOUR_NAME;
+    document.getElementById('herNameFooter').textContent = HER_NAME;
+
+    /* === Typewriter === */
+    const tw = "Hoy celebro tu vida. Gracias por ser hogar, risa y cosquilleo.";
+    const twEl = document.getElementById('typewriter');
+    function typewrite(txt, i=0){
+      if(i<=txt.length){
+        twEl.innerHTML = `<span class="type">${txt.slice(0,i)}</span>`;
+        setTimeout(()=>typewrite(txt, i+1), 28);
+      } else { twEl.innerHTML = txt; }
+    }
+    typewrite(tw);
+
+    /* === Hearts floating === */
+    const hearts = document.getElementById('hearts');
+    const heartChars = ['❤','💗','💖','💘','💕'];
+    function spawnHeart(){
+      const h = document.createElement('div');
+      h.className = 'heart';
+      h.textContent = heartChars[Math.floor(Math.random()*heartChars.length)];
+      h.style.left = Math.random()*100 + 'vw';
+      h.style.setProperty('--dx', (Math.random()*80-40)+'px');
+      h.style.animation = `floatUp ${8+Math.random()*6}s linear`;
+      hearts.appendChild(h);
+      setTimeout(()=>h.remove(), 15000);
+    }
+    for(let i=0;i<20;i++) setTimeout(spawnHeart, i*250);
+    setInterval(spawnHeart, 1200);
+
+    /* === Envelope interactions === */
+    const env = document.getElementById('envelope');
+    document.getElementById('openLetter').addEventListener('click',()=>{
+      env.classList.add('open');
+      celebrate(180);
+    });
+
+    /* === Confetti === */
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    let W,H, confetti=[];
+    function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+    addEventListener('resize', resize); resize();
+
+    function addPiece(){
+      confetti.push({
+        x: Math.random()*W,
+        y: -10,
+        vx: -2+Math.random()*4,
+        vy: 2+Math.random()*2.5,
+        size: 6+Math.random()*6,
+        rot: Math.random()*Math.PI,
+        vr: -0.1+Math.random()*0.2,
+        color: `hsl(${Math.floor(Math.random()*360)},90%,60%)`
+      });
+    }
+    function step(){
+      ctx.clearRect(0,0,W,H);
+      for(const p of confetti){
+        p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.vy *= 0.999; 
+        if(p.y>H+20) p.y=-10;
+        ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+        ctx.fillStyle=p.color; ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);
+        ctx.restore();
+      }
+      requestAnimationFrame(step);
+    }
+    step();
+    function celebrate(n=120){ for(let i=0;i<n;i++) setTimeout(addPiece, i*6); }
+    document.getElementById('throwConfetti').addEventListener('click', ()=> celebrate(200));
+
+    /* === Audio controls === */
+    const audio = document.getElementById('bgm');
+    const btn = document.getElementById('toggleMusic');
+    let playing=false;
+    btn.addEventListener('click', async ()=>{
+      try{
+        if(!playing){ await audio.play(); playing=true; btn.textContent='❚❚ Pause'; }
+        else { audio.pause(); playing=false; btn.textContent='▶︎ Play'; }
+      }catch(err){ alert('Coloca tu archivo en assets/cancion.mp3 para reproducir.'); }
+    });
+  </script>
+</body>
+</html>
